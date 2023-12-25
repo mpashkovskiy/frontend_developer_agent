@@ -2,7 +2,7 @@ from langchain.chains import LLMChain
 from langchain.globals import set_debug
 from langchain.prompts import PromptTemplate
 
-from frontend_developer_agent.llama_cpp_api import LlamaCppApi
+from frontend_developer_agent.llms.llama_cpp_api import LlamaCppApi
 
 set_debug(True)
 

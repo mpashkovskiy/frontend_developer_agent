@@ -67,31 +67,14 @@ class LlamaCppApi(LLM):
         run_manager: Optional[CallbackManagerForLLMRun] = None,
         **kwargs: Any,
     ) -> str:
-        """Call the textgen web API and return the output.
-
-        Args:
-            prompt: The prompt to use for generation.
-            stop: A list of strings to stop generation when encountered.
-
-        Returns:
-            The generated text.
-
-        Example:
-            .. code-block:: python
-
-                from langchain_community.llms import TextGen
-                llm = TextGen(base_url="http://localhost:5000")
-                llm("Write a story about llamas.")
-        """
         url = f"{self.base_url}/completion"
         request = self._default_params.copy()
         request["prompt"] = prompt
         response = requests.post(url, json=request)
-
+        result = ""
         if response.status_code == 200:
             result = response.json()["content"]
         else:
             print(f"ERROR: response: {response}")
-            result = ""
 
         return result

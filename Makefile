@@ -18,6 +18,7 @@ $(VENV)/bin/activate: Pipfile.lock setup.py
 $(VENV): $(VENV)/bin/activate
 
 models/$(MODEL_FILE):
+	mkdir -p models
 	wget \
 		"https://huggingface.co/TheBloke/$(MODEL)-GGUF/resolve/main/$(MODEL_FILE)?download=true" \
 		-O models/$(MODEL_FILE)
