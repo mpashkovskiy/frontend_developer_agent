@@ -6,8 +6,14 @@ name = "pypi"
 [packages]
 frontend_developer_agent = {editable = true, path = "."}
 langchain = "*"
+docker = "*"
+langchain-experimental = "*"
+openai = "*"
+hydra-core = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.9.13"

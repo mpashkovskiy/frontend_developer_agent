@@ -1,0 +1,20 @@
+Scenario 1: Creating a transfer order using a website/app
+Given: User is authorized
+And: located on the main internal page of the website/application
+When: He goes to the page for creating a transfer order
+And: He entered “recipient identification information”
+And: he chose the currency of transfer (plus the transfer in weight - ounce, half ounce, etc.) †
+And: he entered the correct transfer amount in the transfer currency
+And: he chose the method of writing off the transaction fee
+And: he selected the option “At the rate at the time the order was created” / “At the rate at the time the order was executed (when the recipient confirms the transaction)”
+Then: He sees the translation details
+And: the “Create transfer order” button has become active
+When: The user clicked the “Create transfer order” button
+Then: The user is taken to the transfer confirmation page
+And: The user received a transfer confirmation code by phone/mail
+When: He enters the correct “Confirmation Code”
+And: clicks on the “Confirm” button
+Then: It lands on the translation report page
+And: he sees the translation details
+And: he sees that the transfer is awaiting confirmation by the recipient
+And: he sees a clickable button to revoke the transfer order

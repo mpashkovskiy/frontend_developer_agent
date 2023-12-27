@@ -1,5 +1,11 @@
 .DS_Store
+
 .venv
 build
 *.egg-info
+__pycache__/
+
+app
+frontend_developer_agent/configs/tokens.yaml
 models
+outputs

@@ -1,0 +1,4 @@
+hydra:
+  job:
+    env_set:
+      OPENAI_API_KEY: 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
