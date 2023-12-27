@@ -1,5 +1,6 @@
+import logging
 import os
-from anyio import Path
+from pathlib import Path
 
 import hydra
 from hydra.core.hydra_config import HydraConfig
@@ -21,6 +22,7 @@ from frontend_developer_agent.utils import build_container
             config_name=Path(__file__).stem)
 def main(_: DictConfig) -> None:
     set_debug(True)
+    logger = logging.getLogger(__name__)
 
     app_path = os.path.join(HydraConfig.get().runtime.output_dir, "app")
     os.makedirs(app_path)
@@ -36,15 +38,13 @@ def main(_: DictConfig) -> None:
 
     scenarios = open("scenarios.txt", "r").read()
     prompt = (
-        "Create Angular application described with the following scenarios"
-        f":\n{scenarios}"
+        "Create Angular application described with the following scenarios:\n"
+        + scenarios
     )
     try:
         agent.run(prompt)
     except Exception as e:
-        print(e)
+        logger.error(e)
     finally:
         container.kill()
-        print("----------------------------------------")
-        print(f"Results are saved in {app_path}")
-        print("----------------------------------------")
+        logger.info(f"------- Results are saved in {app_path} -------")
