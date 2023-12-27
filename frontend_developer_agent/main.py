@@ -1,8 +1,6 @@
 import os
 from anyio import Path
 
-from docker.client import DockerClient
-from docker.models.containers import Container
 import hydra
 from hydra.core.hydra_config import HydraConfig
 from langchain.chat_models import ChatOpenAI
@@ -15,6 +13,7 @@ from langchain.globals import set_debug
 from omegaconf import DictConfig
 
 from frontend_developer_agent.tools.docker_shell import DockerShellTool
+from frontend_developer_agent.utils import build_container
 
 
 @hydra.main(version_base=None,
@@ -23,20 +22,9 @@ from frontend_developer_agent.tools.docker_shell import DockerShellTool
 def main(_: DictConfig) -> None:
     set_debug(True)
 
-    app_path = os.path.join(
-        HydraConfig.get().runtime.output_dir,
-        "app",
-    )
+    app_path = os.path.join(HydraConfig.get().runtime.output_dir, "app")
     os.makedirs(app_path)
-
-    container: Container = DockerClient.from_env().containers.run(
-        "frontend_developer_agent",
-        "sleep infinity",
-        auto_remove=True,
-        detach=True,
-        volumes=[f"{app_path}:/app"],
-        working_dir="/app",
-    )
+    container = build_container(app_path)
     tools = [
         DockerShellTool(container=container),
     ]
@@ -46,10 +34,10 @@ def main(_: DictConfig) -> None:
     executor = load_agent_executor(model, tools, verbose=True)
     agent = PlanAndExecute(planner=planner, executor=executor)
 
-    scenario = open("scenarios.txt", "r").read()
+    scenarios = open("scenarios.txt", "r").read()
     prompt = (
-        "Create Angular application described with the following scenario"
-        f":\n{scenario}"
+        "Create Angular application described with the following scenarios"
+        f":\n{scenarios}"
     )
     try:
         agent.run(prompt)
