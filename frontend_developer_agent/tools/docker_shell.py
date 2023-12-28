@@ -4,21 +4,24 @@ from docker.models.containers import Container
 from langchain.callbacks.manager import CallbackManagerForToolRun
 from langchain.tools import BaseTool
 
-
-SUCCESS_MESSAGE = "The command successfully executed with result:\n{result}\n"
-ERROR_MESSAGE = "The command failed to execute with error:\n{error}\n"
+DEFAULT_WORKING_DIRECTORY = "/app"
+SUCCESS_MESSAGE = "The command successfully executed."
+ERROR_MESSAGE = "The command failed to execute."
+MESSAGE = """{message} {result}"""
 
 
 class DockerShellTool(BaseTool):
     name = "shell"
-    description = "useful for when you need to execute linux shell commands"
+    description = (
+        "Useful when you need to execute linux shell commands "
+        "in a specific working directory. "
+    )
     container: Container = None
-    default_working_directory_absolute_path = "/app"
 
     def _run(
         self,
         command: str,
-        working_directory_absolute_path: str = default_working_directory_absolute_path,
+        working_directory_absolute_path: str = DEFAULT_WORKING_DIRECTORY,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         # That approach is better because allows to interract with the process
@@ -30,12 +33,21 @@ class DockerShellTool(BaseTool):
         # )
         # res = process.stdout.readlines().decode("utf-8").split("\n")
 
-        result = self.container.exec_run(
-            command,
+        exit_code, output = self.container.exec_run(
+            f"bash -c '{command}'",
             workdir=working_directory_absolute_path,
             # If ``stream=True``, a generator yielding response chunks.
         )
-        if result.exit_code != 0:
-            return ERROR_MESSAGE.format(error=result.output.decode("utf-8"))
-
-        return SUCCESS_MESSAGE.format(result=result.output.decode("utf-8"))
+        output = output.decode("utf-8").strip()
+        return MESSAGE.format(
+            message=(
+                SUCCESS_MESSAGE
+                if exit_code == 0
+                else ERROR_MESSAGE
+            ),
+            result=(
+                ""
+                if output == ""
+                else f"Result: {output}"
+            ),
+        ).strip()

@@ -1,4 +1,11 @@
 hydra:
   job:
     env_set:
+      # Optional variables
+      # LANGCHAIN_API_KEY: 
+      # LANGCHAIN_ENDPOINT: https://api.smith.langchain.com
+      # LANGCHAIN_PROJECT:
+      # LANGCHAIN_TRACING_V2: "true"
+
+      # Mandatory variable
       OPENAI_API_KEY:

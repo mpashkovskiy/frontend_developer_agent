@@ -1,4 +1,4 @@
-Scenario 1: Creating a transfer order using a website/app
+Scenario 1: Creating a transfer order using a website/application
 Given: User is authorized
 And: located on the main internal page of the website/application
 When: He goes to the page for creating a transfer order

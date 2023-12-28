@@ -3,7 +3,7 @@
 .venv
 build
 *.egg-info
-__pycache__/
+**/__pycache__
 
 app
 frontend_developer_agent/configs/tokens.yaml
