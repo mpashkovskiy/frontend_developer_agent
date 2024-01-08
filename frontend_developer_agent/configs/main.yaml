@@ -1,3 +1,5 @@
 defaults:
   - tokens
   - _self_
+
+feedback_cmd: npx eslint src && PORT=8081 npx playwright test

@@ -7,5 +7,5 @@ hydra:
       # LANGCHAIN_PROJECT:
       # LANGCHAIN_TRACING_V2: "true"
 
-      # Mandatory variable
+      # Mandatory variables
       OPENAI_API_KEY:

@@ -1,0 +1,4 @@
+.venv
+app/node_modules
+models
+outputs

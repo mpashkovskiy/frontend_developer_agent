@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 frontend_developer_agent = {editable = true, path = "."}
 langchain = "*"
-docker = "*"
 langchain-experimental = "*"
 openai = "*"
 hydra-core = "*"
